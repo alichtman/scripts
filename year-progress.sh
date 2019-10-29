@@ -22,7 +22,7 @@ function GET_PERCENTAGE {
             local TOTAL_DAYS=365;
     fi
     CURRENT_DAY=$(echo "$(date +%j) + 0" | bc)
-    echo $((200 * CURRENT_DAY/ TOTAL_DAYS % 2 + 100 * CURRENT_DAY / TOTAL_DAYS));
+    echo $((200 * CURRENT_DAY / TOTAL_DAYS % 2 + 100 * CURRENT_DAY / TOTAL_DAYS));
 }
 
 function PRINT_YEAR_PROGRESS {
@@ -41,20 +41,24 @@ function PRINT_YEAR_PROGRESS {
         BAR=${BAR}"░";
     }
     BAR="${BAR} ${PERCENTAGE}%";
-    echo -e "\033[92m$BAR";
+    # Green bar
+    color="\033[92m"
+    echo -e "$color$BAR";
 }
 
 function BANNER() {
     msg="# $* #"
     edge=$(echo "$msg" | sed 's/./#/g')
-    color="\033[92m"
+    # Blue header
+    color="\033[34m"
     echo -e "$color$edge"
     echo -e "$color$msg"
-    echo -e "$color$edge\n"
+    echo -e "$color$edge\n\033[0m"
 }
 
 function MAIN {
     BANNER "Year Progress"
+    echo -e "Current date: $(date +'%D')"
     PRINT_YEAR_PROGRESS;
 }
 
