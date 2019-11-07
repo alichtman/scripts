@@ -62,7 +62,7 @@ function PRINT_YEAR_PROGRESS {
 function BANNER() {
     msg="# $* #"
     edge=$(echo "$msg" | sed 's/./#/g')
-    # Blue header
+    # green header
     color="\033[92m"
     echo -e "$color$edge"
     echo -e "$color$msg"
