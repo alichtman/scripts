@@ -9,7 +9,7 @@
 
 set -e;
 
-function GET_PERCENTAGE {
+function GET_TOTAL_DAYS_IN_YEAR {
     local CURRENT_YEAR
     CURRENT_YEAR=$(date +%Y);
     if [ $((CURRENT_YEAR % 400)) -eq 0 ]; then
@@ -21,7 +21,20 @@ function GET_PERCENTAGE {
     else
             local TOTAL_DAYS=365;
     fi
-    CURRENT_DAY=$(echo "$(date +%j) + 0" | bc)
+    echo $TOTAL_DAYS
+}
+
+function GET_CURRENT_DAY {
+    echo "$(date +%j) + 0" | bc
+}
+
+function GET_DAYS_REMAINING {
+    echo $(expr $(GET_TOTAL_DAYS_IN_YEAR) - $(GET_CURRENT_DAY))
+}
+
+function GET_PERCENTAGE {
+    TOTAL_DAYS=$(GET_TOTAL_DAYS_IN_YEAR)
+    CURRENT_DAY=$(GET_CURRENT_DAY)
     echo $((200 * CURRENT_DAY / TOTAL_DAYS % 2 + 100 * CURRENT_DAY / TOTAL_DAYS));
 }
 
@@ -43,7 +56,7 @@ function PRINT_YEAR_PROGRESS {
     BAR="${BAR} ${PERCENTAGE}%";
     # Green bar
     color="\033[92m"
-    echo -e "$color$BAR";
+    echo -e "$color$BAR complete";
 }
 
 function BANNER() {
@@ -58,7 +71,8 @@ function BANNER() {
 
 function MAIN {
     BANNER "Year Progress"
-    echo -e "Current date: $(date +'%D')"
+    echo -e "Current date:        $(date +'%b %d %Y')"
+    echo -e "Days Remaining:      $(GET_DAYS_REMAINING)"
     PRINT_YEAR_PROGRESS;
 }
 
