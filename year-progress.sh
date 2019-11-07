@@ -63,7 +63,7 @@ function BANNER() {
     msg="# $* #"
     edge=$(echo "$msg" | sed 's/./#/g')
     # Blue header
-    color="\033[34m"
+    color="\033[92m"
     echo -e "$color$edge"
     echo -e "$color$msg"
     echo -e "$color$edge\n\033[0m"
