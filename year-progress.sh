@@ -71,7 +71,7 @@ function BANNER() {
 
 function MAIN {
     BANNER "Year Progress"
-    echo -e "Current date:        $(date +'%b %d %Y')"
+    echo -e "Current Date:        $(date +'%b %d %Y')"
     echo -e "Days Remaining:      $(GET_DAYS_REMAINING)"
     PRINT_YEAR_PROGRESS;
 }
