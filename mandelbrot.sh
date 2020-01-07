@@ -1,3 +1,4 @@
+#!/bin/bash
 # http://mewbies.com/acute_terminal_fun_02_view_ascii_art_ansi_art_and_movies_on_the_terminal.htm
 # Written by Charles Cooke
 # Requires bash. Not zsh compatible.
