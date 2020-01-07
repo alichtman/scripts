@@ -3,5 +3,5 @@
 
 while true
 do
-    echo "no"
+    echo "n"
 done
