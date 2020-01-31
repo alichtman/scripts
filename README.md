@@ -6,13 +6,13 @@ Any licenses that came with the scripts have been preserved. Credit is given in 
 
 ## Installation
 
-To install these, just move (or symlink) them to a directory that's on your `$PATH` (like `/usr/local/bin/` or `~/bin`) after making them executable.
-
 ```bash
+# Clone the repo and enter the directory
 $ git clone https://github.com/alichtman/scripts.git && cd scripts
+# Make the script you want to install executable
 $ chmod +x $SCRIPT_NAME
-# Move them to a directory on $PATH
+# Move it to a directory on $PATH
 $ mv $SCRIPT_NAME /usr/local/bin/
-# Or symlink them there
+# Or symlink it there
 $ ln -s $(realpath $SCRIPT_NAME) /usr/local/bin/
 ```
