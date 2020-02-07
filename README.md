@@ -6,6 +6,8 @@ Any licenses that came with the scripts have been preserved. Credit is given in 
 
 ## Installation
 
+For all bash scripts, installation can be done with:
+
 ```bash
 # Clone the repo and enter the directory
 $ git clone https://github.com/alichtman/scripts.git && cd scripts
@@ -16,3 +18,5 @@ $ mv $SCRIPT_NAME /usr/local/bin/
 # Or symlink it there
 $ ln -s $(realpath $SCRIPT_NAME) /usr/local/bin/
 ```
+
+Some scripts may need to be compiled before being symlinked, however. This has been noted in the scripts where it's necessary.
