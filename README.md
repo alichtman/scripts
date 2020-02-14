@@ -16,7 +16,5 @@ $ chmod +x $SCRIPT_NAME
 # Move it to a directory on $PATH
 $ mv $SCRIPT_NAME /usr/local/bin/
 # Or symlink it there
-$ ln -s $(realpath $SCRIPT_NAME) /usr/local/bin/
+$ ln -s $(realpath $SCRIPT_NAME) /usr/local/bin/$SCRIPT_NAME
 ```
-
-Some scripts may need to be compiled before being symlinked, however. This has been noted in the scripts where it's necessary.
