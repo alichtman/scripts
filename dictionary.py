@@ -7,7 +7,7 @@ Modified from:
 
 http://macscripter.net/viewtopic.php?id=26675
 http://apple.stackexchange.com/questions/90040/look-up-a-word-in-dictionary-app-in-terminal
-https://https://gist.github.com/lambdamusic/bdd56b25a5f547599f7f
+https://gist.github.com/lambdamusic/bdd56b25a5f547599f7f
 """
 
 
