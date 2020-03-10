@@ -2,6 +2,10 @@
 # USAGE: concatenate_pdfs INPUTS
 # Outputs the concatenated file as Merged.pdf
 
+# Written by: Aaron Lichtman
+# https://github.com/alichtman/scripts/blob/master/concatenate-pdfs.sh
+
+
 if [ -z "$*" ]; then
     echo "Error: No args.";
     exit 1;
