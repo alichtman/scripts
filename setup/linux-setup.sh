@@ -3,7 +3,7 @@
 
 # zsh
 sudo apt install zsh
-chsh -s $(which zsh)
+chsh -s "$(which zsh)"
 
 # oh-my-zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -28,8 +28,8 @@ nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall'
 
 # zinit
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-source ~/.zshrc
-
+# shellcheck disable=SC1090
+source "$HOME/.zshrc"
 
 sudo apt-get install ctags
 sudo apt install hub xsel
@@ -52,6 +52,14 @@ ln -s ~/.tmux/tmux.conf ~/.tmux.conf
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 echo "Prefix + I to install plugins"
 
-
+# install diff-so-fancy
 curl https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/bin/diff-so-fancy
 chmod +x ~/bin/diff-so-fancy
+
+# clone important repos
+mkdir ~/Desktop/Development
+git clone --recursive git@github.com:alichtman/notes.git ~/Desktop/Development/
+git clone git@github.com:alichtman/writeups.git ~/Desktop/Development/
+git clone git@github.com:alichtman/scripts.git ~/Desktop/Development/
+git clone git@github.com:alichtman/fzf-notes.git ~/Desktop/Development/
+(cd ~/Desktop/Development/fzf-notes && chmod +x fzf-notes && cp fzf-notes ~/bin/fzf-notes)
