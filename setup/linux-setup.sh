@@ -58,8 +58,8 @@ chmod +x ~/bin/diff-so-fancy
 
 # clone important repos
 mkdir ~/Desktop/Development
-git clone --recursive git@github.com:alichtman/notes.git ~/Desktop/Development/
-git clone git@github.com:alichtman/writeups.git ~/Desktop/Development/
-git clone git@github.com:alichtman/scripts.git ~/Desktop/Development/
-git clone git@github.com:alichtman/fzf-notes.git ~/Desktop/Development/
+git clone --recursive git@github.com:alichtman/notes.git ~/Desktop/Development/notes
+git clone git@github.com:alichtman/writeups.git ~/Desktop/Development/writeups
+git clone git@github.com:alichtman/scripts.git ~/Desktop/Development/scripts
+git clone git@github.com:alichtman/fzf-notes.git ~/Desktop/Development/fzf-notes
 (cd ~/Desktop/Development/fzf-notes && chmod +x fzf-notes && cp fzf-notes ~/bin/fzf-notes)
