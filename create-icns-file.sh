@@ -1,5 +1,7 @@
 #!/bin/bash
 # $ ./create-icns-file.sh icon.png
+# https://github.com/alichtman/scripts/blob/master/create-icns-file.sh
+
 # This script creates a .icns file from a single PNG image.
 # Modified from: https://stackoverflow.com/a/20703594
 
