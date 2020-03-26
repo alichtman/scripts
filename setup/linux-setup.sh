@@ -6,7 +6,8 @@ sudo apt install zsh
 chsh -s "$(which zsh)"
 
 # oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+[ -d ~/.oh-my-zsh ] || sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 echo "Maybe a good time to restart?"
 
@@ -31,7 +32,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 # shellcheck disable=SC1090
 source "$HOME/.zshrc"
 
-sudo apt-get install ctags
+sudo apt-get install ctags ranger fzf
 sudo apt install hub xsel
 
 # Gen new SSH key
@@ -63,3 +64,16 @@ git clone git@github.com:alichtman/writeups.git ~/Desktop/Development/writeups
 git clone git@github.com:alichtman/scripts.git ~/Desktop/Development/scripts
 git clone git@github.com:alichtman/fzf-notes.git ~/Desktop/Development/fzf-notes
 (cd ~/Desktop/Development/fzf-notes && chmod +x fzf-notes && cp fzf-notes ~/bin/fzf-notes)
+
+# install yq
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
+sudo add-apt-repository ppa:rmescandon/yq
+sudo apt update
+sudo apt install yq -y
+
+# Install Hack Nerd font
+git clone --depth=1 git@github.com:ryanoasis/nerd-fonts.git /tmp/nerd-fonts
+(cd /tmp/nerd-fonts && ./install.sh Hack)
+rm -rf /tmp/nerd-fonts
+echo "WARN: Manual installation of Nerd Fonts required."
+xdg-open ~/.local/share/fonts/
