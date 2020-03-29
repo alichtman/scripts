@@ -18,3 +18,4 @@ for i in $sessions ; do
     echo -e "$BOLD$RED     [*] $i"
 done;
 
+echo -e "$RESET"
