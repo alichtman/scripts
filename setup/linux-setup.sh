@@ -32,8 +32,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 # shellcheck disable=SC1090
 source "$HOME/.zshrc"
 
-sudo apt-get install ctags ranger fzf
-sudo apt install hub xsel
+sudo apt-get install ctags ranger fzf silversearcher-ag
+sudo apt install hub xsel ddgr
 
 # Gen new SSH key
 echo "Place this key at /home/alichtman/.ssh/alichtman-GitHub"
@@ -77,3 +77,25 @@ git clone --depth=1 git@github.com:ryanoasis/nerd-fonts.git /tmp/nerd-fonts
 rm -rf /tmp/nerd-fonts
 echo "WARN: Manual installation of Nerd Fonts required."
 xdg-open ~/.local/share/fonts/
+
+
+# Install latte-dock
+# sudo add-apt-repository ppa:rikmills/latte-dock
+# sudo apt update
+# sudo apt install latte-dock
+
+# Install backup tool
+sudo apt-get install deja-dup
+
+# Install cargo
+curl https://sh.rustup.rs -sSf | sh
+
+cargo install ripgrep
+
+
+pip3 install pynvim
+
+curl https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping -o ~/bin/prettyping
+chmod +x ~/bin/prettyping
+
+pip3 install thefuck
