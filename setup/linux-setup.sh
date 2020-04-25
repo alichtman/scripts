@@ -1,9 +1,11 @@
 #!/bin/bash
 # This script does basic linux setup
 
+sudo apt update
+
 # zsh
 sudo apt install zsh
-chsh -s "$(which zsh)"
+chsh -s "$(command -v zsh)"
 
 # oh-my-zsh
 
@@ -11,29 +13,34 @@ chsh -s "$(which zsh)"
 
 echo "Maybe a good time to restart?"
 
-# shallow-backup + dotfiles
-pip3 install shallow-backup>=4.0.1
+pip3 install shallow-backup>=4.0.1 pynvim thefuck
 
+# shallow-backup + dotfiles
 mkdir ~/shallow-backup
 git clone https://github.com/alichtman/dotfiles ~/shallow-backup/dotfiles
 mv ~/shallow-backup/dotfiles/.config/shallow-backup.conf ~/.config
-shallow-backup
-
+shallow-backup -reinstall_dots
 
 # vim-plug for neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# Start vim and install plugins
+# Install nvim and plugins
+sudo apt install neovim
 nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall'
 
 # zinit
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-# shellcheck disable=SC1090
-source "$HOME/.zshrc"
 
-sudo apt-get install ctags ranger fzf silversearcher-ag
-sudo apt install hub xsel ddgr
+# shellcheck disable=SC1090
+source "$XDG_CONFIG_HOME/zsh/.zshrc"
+
+# install yq
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
+sudo add-apt-repository ppa:rmescandon/yq
+sudo apt install yq -y
+
+sudo apt install ctags ranger fzf silversearcher-ag libclang-dev hub xsel ddgr git-extras latte-dock polybar tmux -y
 
 # Gen new SSH key
 echo "Place this key at /home/alichtman/.ssh/alichtman-GitHub"
@@ -42,11 +49,6 @@ ssh-keygen -t rsa -b 4096 -C "aaronlichtman@gmail.com"
 # Install lsd
 curl https://github.com/Peltoche/lsd/releases/download/0.16.0/lsd_0.16.0_amd64.deb -o ~/Downloads/lsd.deb
 sudo dpkg -i ~/Downloads/lsd.deb
-
-# Install tls
-mkdir ~/bin
-curl https://raw.githubusercontent.com/alichtman/scripts/master/tls.sh -o ~/bin/tls
-chmod +x ~/bin/tls
 
 # tmux setup
 ln -s ~/.tmux/tmux.conf ~/.tmux.conf
@@ -57,19 +59,17 @@ echo "Prefix + I to install plugins"
 curl https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/bin/diff-so-fancy
 chmod +x ~/bin/diff-so-fancy
 
-# clone important repos
+# Clone my repos
 mkdir ~/Desktop/Development
 git clone --recursive git@github.com:alichtman/notes.git ~/Desktop/Development/notes
 git clone git@github.com:alichtman/writeups.git ~/Desktop/Development/writeups
 git clone git@github.com:alichtman/scripts.git ~/Desktop/Development/scripts
 git clone git@github.com:alichtman/fzf-notes.git ~/Desktop/Development/fzf-notes
-(cd ~/Desktop/Development/fzf-notes && chmod +x fzf-notes && cp fzf-notes ~/bin/fzf-notes)
 
-# install yq
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
-sudo add-apt-repository ppa:rmescandon/yq
-sudo apt update
-sudo apt install yq -y
+# Install my scripts
+mkdir ~/bin
+(cd ~/Desktop/Development/fzf-notes && chmod +x fzf-notes && ln -s $(realpath fzf-notes) ~/bin/fzf-notes)
+(cd ~/Desktop/Development/scripts && chmod +x tls.sh && ln -s $(realpath tls.sh) ~/bin/tls) 
 
 # Install Hack Nerd font
 git clone --depth=1 git@github.com:ryanoasis/nerd-fonts.git /tmp/nerd-fonts
@@ -78,24 +78,10 @@ rm -rf /tmp/nerd-fonts
 echo "WARN: Manual installation of Nerd Fonts required."
 xdg-open ~/.local/share/fonts/
 
-
-# Install latte-dock
-# sudo add-apt-repository ppa:rikmills/latte-dock
-# sudo apt update
-# sudo apt install latte-dock
-
-# Install backup tool
-sudo apt-get install deja-dup
-
 # Install cargo
 curl https://sh.rustup.rs -sSf | sh
 
-cargo install ripgrep
-
-
-pip3 install pynvim
+cargo install ripgrep bat fd-find
 
 curl https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping -o ~/bin/prettyping
 chmod +x ~/bin/prettyping
-
-pip3 install thefuck
