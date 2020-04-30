@@ -1,5 +1,6 @@
 #!/bin/bash
 # This script does (highly opinionated) Linux setup on Debian-based distros.
+# Some of the git repos cloned below are private to @alichtman and will require access.
 # Written by: Aaron Lichtman (@alichtman on GitHub)
 
 echo "Have you added contrib and non-free to the /etc/apt/sources.list file?"
@@ -18,7 +19,6 @@ sudo apt install zsh
 chsh -s "$(command -v zsh)"
 
 # oh-my-zsh
-
 [ -d ~/.oh-my-zsh ] || sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 pip3 install shallow-backup>=4.0.1
@@ -50,7 +50,7 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
 sudo add-apt-repository ppa:rmescandon/yq
 sudo apt install yq -y
 
-sudo apt install ctags ranger fzf silversearcher-ag libclang-dev hub xsel ddgr git-extras latte-dock polybar tmux -y
+sudo apt install ctags ranger fzf silversearcher-ag libclang-dev hub xsel ddgr htop git-extras latte-dock polybar tmux -y
 
 # Gen new SSH key
 echo "Place this key at ~/.ssh/alichtman-GitHub, and upload the public key to GitHub"
@@ -92,12 +92,9 @@ mkdir ~/bin
 (cd ~/Desktop/Development/fzf-notes && chmod +x fzf-notes && ln -s "$(realpath fzf-notes)" ~/bin/fzf-notes)
 (cd ~/Desktop/Development/scripts && chmod +x tls.sh && ln -s "$(realpath tls.sh)" ~/bin/tls)
 
-# Install Hack Nerd font
-# git clone --depth=1 git@github.com:ryanoasis/nerd-fonts.git /tmp/nerd-fonts
-# (cd /tmp/nerd-fonts && ./install.sh Hack)
-# rm -rf /tmp/nerd-fonts
-# echo "WARN: Manual installation of Nerd Fonts required."
-# xdg-open ~/.local/share/fonts/
+# Install fonts with glyph support
+# TODO: Actually install things
+git clone git@github.com:alichtman/patched-nerd-fonts.git ~/Desktop/Development/patched-nerd-fonts
 
 # Install cargo
 curl https://sh.rustup.rs -sSf | sh
@@ -107,3 +104,4 @@ cargo install ripgrep bat fd-find
 curl https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping -o ~/bin/prettyping && chmod +x ~/bin/prettyping
 
 echo -e "## Setup Complete"
+echo -e "## Rememer to install the fonts you want to use!"
