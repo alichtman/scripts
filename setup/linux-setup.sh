@@ -3,6 +3,9 @@
 # Some of the git repos cloned below are private to @alichtman and will require access.
 # Written by: Aaron Lichtman (@alichtman on GitHub)
 
+# To run this script, use the following bash command:
+# $ wget https://raw.githubusercontent.com/alichtman/scripts/master/setup/linux-setup.sh | bash
+
 error() {
   printf '\E[31m'; echo "$@"; printf '\E[0m'
 }
