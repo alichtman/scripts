@@ -6,15 +6,14 @@ Any licenses that came with the scripts have been preserved. Credit is given in 
 
 ## Installation
 
-For all bash scripts, installation can be done with:
+To install all scripts to `~/bin/$SCRIPT`:
 
 ```bash
 # Clone the repo and enter the directory
 $ git clone https://github.com/alichtman/scripts.git && cd scripts
-# Make the script you want to install executable
-$ chmod +x $SCRIPT_NAME
-# Move it to a directory on $PATH
-$ mv $SCRIPT_NAME /usr/local/bin/
-# Or symlink it there
-$ ln -s $(realpath $SCRIPT_NAME) /usr/local/bin/$SCRIPT_NAME
+$ chmod +x INSTALL.sh && ./INSTALL.sh
 ```
+
+Scripts are installed without extensions, so `scripts/tls.sh` gets symlinked to `~/bin/tls`.
+
+Remember to add `~/bin` to your `$PATH`, or change the install location before running the install script.
