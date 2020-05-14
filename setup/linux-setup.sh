@@ -1,9 +1,23 @@
 #!/bin/bash
-# This script does (highly opinionated) Linux setup on Debian-based distros.
+# This script does (highly opinionated) Linux setup on Ubuntu.
 # Some of the git repos cloned below are private to @alichtman and will require access.
 # Written by: Aaron Lichtman (@alichtman on GitHub)
 
-sudo apt install software-properties-common
+error() {
+  printf '\E[31m'; echo "$@"; printf '\E[0m'
+}
+
+if [[ $(uname -s) != "Linux" ]]; then
+    error "ERROR: OS is not Linux!"
+    exit 1
+fi
+
+if [[ $EUID -eq 0 ]]; then
+    error "Must NOT be root user"
+    exit 1
+fi
+
+sudo apt install software-properties-common curl
 sudo apt-add-repository multiverse
 
 echo "Have you added contrib and non-free to the /etc/apt/sources.list file?"
@@ -14,6 +28,22 @@ select yn in "Yes" "No"; do
         No ) exit;;
     esac
 done
+
+
+# Gen new SSH key
+echo "Place this key at ~/.ssh/alichtman-GitHub, and upload the public key to GitHub"
+ssh-keygen -t rsa -b 4096 -C "aaronlichtman@gmail.com"
+
+echo "Have you added the public key to GitHub?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) break;;
+        No ) break;;
+    esac
+done
+
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/alichtman-GitHub
 
 sudo apt-update
 
@@ -28,6 +58,8 @@ mkdir ~/shallow-backup
 git clone https://github.com/alichtman/dotfiles ~/shallow-backup/dotfiles
 cp ~/shallow-backup/dotfiles/.config/shallow-backup.conf ~/.config
 shallow-backup -reinstall-dots
+# Will reclone later with SSH so I can use it as a git repo
+rm -rf ~/shallow-backup/dotfiles
 
 # vim-plug for neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -47,6 +79,12 @@ source "$XDG_CONFIG_HOME/zsh/.zshrc"
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
 sudo add-apt-repository ppa:rmescandon/yq
 
+# install spotify
+curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+sudo apt update
+
 packagelist=(
     ddgr
     fzf
@@ -61,6 +99,7 @@ packagelist=(
     plymouth
     ranger
     silversearcher-ag
+    spotify-client
     tmux
     xsel
     gcc
@@ -70,8 +109,8 @@ packagelist=(
 )
 sudo apt install "${packagelist[@]}" -y
 
-# Install nodejs
-sudo snap install --edge --classic node
+# Install node
+snap install --edge --classic node
 
 # Install ctags for Vista.vim
 mkdir ~/open-source-software
@@ -82,18 +121,6 @@ cd ~/open-source-software/ctags || exit
 make
 sudo make install
 cd ~ || exit
-
-# Gen new SSH key
-echo "Place this key at ~/.ssh/alichtman-GitHub, and upload the public key to GitHub"
-ssh-keygen -t rsa -b 4096 -C "aaronlichtman@gmail.com"
-
-echo "Have you added the public key to GitHub?"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) break;;
-    esac
-done
 
 # Install lsd
 curl https://github.com/Peltoche/lsd/releases/download/0.16.0/lsd_0.16.0_amd64.deb -o ~/Downloads/lsd.deb
@@ -116,6 +143,7 @@ git clone --recursive git@github.com:alichtman/notes.git ~/Desktop/Development/n
 git clone git@github.com:alichtman/writeups.git ~/Desktop/Development/writeups
 git clone git@github.com:alichtman/scripts.git ~/Desktop/Development/scripts
 git clone git@github.com:alichtman/fzf-notes.git ~/Desktop/Development/fzf-notes
+git clone git@github.com:alichtman/dotfiles.git ~/shallow-backup/dotfiles
 
 # Install my scripts
 mkdir ~/bin
@@ -123,7 +151,7 @@ mkdir ~/bin
 (cd ~/Desktop/Development/scripts && chmod +x INSTALL.sh && ./INSTALL.sh)
 
 # Install fonts with glyph support
-# TODO: Actually install things
+# TODO: Actually install the font
 git clone git@github.com:alichtman/patched-nerd-fonts.git ~/Desktop/Development/patched-nerd-fonts
 
 # Install cargo
