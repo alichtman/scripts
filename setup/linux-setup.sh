@@ -105,6 +105,7 @@ echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sou
 sudo apt update
 
 sudo apt install -y \
+    chromium-browser \
     ddgr \
     fzf \
     g++ \
@@ -126,10 +127,9 @@ sudo apt install -y \
     silversearcher-ag \
     spotify-client \
     steam \
-    chromium-browser \
     tmux \
     xsel \
-    yq \
+    yq
 
 # Install node
 sudo snap install --edge --classic node
