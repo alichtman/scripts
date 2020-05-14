@@ -190,11 +190,8 @@ curl https://sh.rustup.rs -sSf | sh
 
 cargo install ripgrep bat fd-find starship lsd
 
-# Set up ssh
-sudo ufw allow ssh
-
 rm ~/.bashrc ~/.bash_history ~/.bash_logout ~/.sudo_as_admin_successful ~/.wget-hsts
 
 echo -e "## Setup Complete"
 echo -e "## Remember to install the fonts you want to use!"
-echo -e "## Remember to add SSH keys and disable password-based logins!"
+echo -e "## Remember to set up SSH, SSH keys and disable password-based logins!"
