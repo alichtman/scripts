@@ -3,6 +3,9 @@
 # Some of the git repos cloned below are private to @alichtman and will require access.
 # Written by: Aaron Lichtman (@alichtman on GitHub)
 
+sudo apt install software-properties-common
+sudo apt-add-repository multiverse
+
 echo "Have you added contrib and non-free to the /etc/apt/sources.list file?"
 echo "    -> https://wiki.debian.org/SourcesList"
 select yn in "Yes" "No"; do
@@ -12,24 +15,19 @@ select yn in "Yes" "No"; do
     esac
 done
 
-sudo apt update
+sudo apt-update
 
 # zsh
 sudo apt install zsh
 chsh -s "$(command -v zsh)"
 
-# oh-my-zsh
-[ -d ~/.oh-my-zsh ] || sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-pip3 install shallow-backup>=4.0.1
-pip3 install pynvim thefuck
+pip3 install shallow-backup pynvim thefuck
 
 # shallow-backup + dotfiles
-# TODO: Convert to dotbot?
 mkdir ~/shallow-backup
 git clone https://github.com/alichtman/dotfiles ~/shallow-backup/dotfiles
-mv ~/shallow-backup/dotfiles/.config/shallow-backup.conf ~/.config
-shallow-backup -reinstall_dots
+cp ~/shallow-backup/dotfiles/.config/shallow-backup.conf ~/.config
+shallow-backup -reinstall-dots
 
 # vim-plug for neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -48,9 +46,42 @@ source "$XDG_CONFIG_HOME/zsh/.zshrc"
 # install yq
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
 sudo add-apt-repository ppa:rmescandon/yq
-sudo apt install yq -y
 
-sudo apt install ctags ranger fzf silversearcher-ag libclang-dev hub xsel ddgr htop git-extras latte-dock polybar tmux -y
+packagelist=(
+    ddgr
+    fzf
+    git
+    git-extras
+    htop
+    hub
+    latte-dock
+    libclang-dev
+    libjansson-dev # ctags
+    polybar
+    plymouth
+    ranger
+    silversearcher-ag
+    tmux
+    xsel
+    gcc
+    g++
+    make
+    yq
+)
+sudo apt install "${packagelist[@]}" -y
+
+# Install nodejs
+sudo snap install --edge --classic node
+
+# Install ctags for Vista.vim
+mkdir ~/open-source-software
+git clone https://github.com/universal-ctags/ctags.git --depth=1 ~/open-source-software/ctags
+cd ~/open-source-software/ctags || exit
+./autogen.sh
+./configure
+make
+sudo make install
+cd ~ || exit
 
 # Gen new SSH key
 echo "Place this key at ~/.ssh/alichtman-GitHub, and upload the public key to GitHub"
@@ -70,17 +101,16 @@ sudo dpkg -i ~/Downloads/lsd.deb
 rm ~/Downloads/lsd.deb
 
 # tmux setup
-ln -s ~/.tmux/tmux.conf ~/.tmux.conf
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+mkdir ~/.config/tmux/plugins
+git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 # Install tpm packages
-~/.tmux/plugins/tpm/bin/install_plugins
+~/.config/tmux/plugins/tpm/bin/install_plugins
 
-# Install diff-so-fancy
-curl https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/bin/diff-so-fancy
-chmod +x ~/bin/diff-so-fancy
+# Install diff-so-fancy and prettyping
+curl https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/bin/diff-so-fancy && chmod +x ~/bin/diff-so-fancy
+curl https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping -o ~/bin/prettyping && chmod +x ~/bin/prettyping
 
 # Clone my repos
-# TODO: Move ~/Desktop/Development to ~/Development ?
 mkdir ~/Desktop/Development
 git clone --recursive git@github.com:alichtman/notes.git ~/Desktop/Development/notes
 git clone git@github.com:alichtman/writeups.git ~/Desktop/Development/writeups
@@ -100,8 +130,6 @@ git clone git@github.com:alichtman/patched-nerd-fonts.git ~/Desktop/Development/
 curl https://sh.rustup.rs -sSf | sh
 
 cargo install ripgrep bat fd-find
-
-curl https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping -o ~/bin/prettyping && chmod +x ~/bin/prettyping
 
 echo -e "## Setup Complete"
 echo -e "## Rememer to install the fonts you want to use!"
