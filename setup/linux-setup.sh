@@ -51,9 +51,12 @@ ssh-add ~/.ssh/alichtman-GitHub
 sudo apt-update
 
 # zsh
-sudo apt install zsh
+sudo apt install zsh -y
+echo "Changing shell to zsh"
 chsh -s "$(command -v zsh)"
 
+sudo apt install python3-pip -y
+export PATH="$PATH:$HOME/.local/bin"
 pip3 install shallow-backup pynvim thefuck
 
 # shallow-backup + dotfiles
@@ -64,6 +67,9 @@ shallow-backup -reinstall-dots
 # Will reclone later with SSH so I can use it as a git repo
 rm -rf ~/shallow-backup/dotfiles
 
+source ~/.zshenv
+source ~/.config/zsh/.zshrc
+
 # vim-plug for neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -73,10 +79,8 @@ sudo apt install neovim
 nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall'
 
 # zinit
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-
-# shellcheck disable=SC1090
-source "$XDG_CONFIG_HOME/zsh/.zshrc"
+mkdir ~/.config/zsh/.zinit
+git clone https://github.com/zdharma/zinit.git ~/.config/zsh/.zinit/bin
 
 # install yq
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
@@ -88,32 +92,13 @@ echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sou
 
 sudo apt update
 
-packagelist=(
-    ddgr
-    fzf
-    git
-    git-extras
-    htop
-    hub
-    latte-dock
-    libclang-dev
-    libjansson-dev # ctags
-    polybar
-    plymouth
-    ranger
-    silversearcher-ag
-    spotify-client
-    tmux
-    xsel
-    gcc
-    g++
-    make
-    yq
-)
-sudo apt install "${packagelist[@]}" -y
+sudo apt install -y ddgr fzf g++ gcc git git-extras htop hub latte-dock libclang-dev libjansson-dev make neofetch plymouth polybar ranger silversearcher-ag spotify-client tmux xsel yq
 
 # Install node
 snap install --edge --classic node
+
+# Install lsd
+sudo snap install lsd
 
 # Install ctags for Vista.vim
 mkdir ~/open-source-software
@@ -124,11 +109,6 @@ cd ~/open-source-software/ctags || exit
 make
 sudo make install
 cd ~ || exit
-
-# Install lsd
-curl https://github.com/Peltoche/lsd/releases/download/0.16.0/lsd_0.16.0_amd64.deb -o ~/Downloads/lsd.deb
-sudo dpkg -i ~/Downloads/lsd.deb
-rm ~/Downloads/lsd.deb
 
 # tmux setup
 mkdir ~/.config/tmux/plugins
@@ -160,7 +140,7 @@ git clone git@github.com:alichtman/patched-nerd-fonts.git ~/Desktop/Development/
 # Install cargo
 curl https://sh.rustup.rs -sSf | sh
 
-cargo install ripgrep bat fd-find
+cargo install ripgrep bat fd-find starship
 
 echo -e "## Setup Complete"
 echo -e "## Rememer to install the fonts you want to use!"
