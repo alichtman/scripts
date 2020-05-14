@@ -120,7 +120,7 @@ git clone git@github.com:alichtman/fzf-notes.git ~/Desktop/Development/fzf-notes
 # Install my scripts
 mkdir ~/bin
 (cd ~/Desktop/Development/fzf-notes && chmod +x fzf-notes && ln -s "$(realpath fzf-notes)" ~/bin/fzf-notes)
-(cd ~/Desktop/Development/scripts && chmod +x tls.sh && ln -s "$(realpath tls.sh)" ~/bin/tls)
+(cd ~/Desktop/Development/scripts && chmod +x INSTALL.sh && ./INSTALL.sh)
 
 # Install fonts with glyph support
 # TODO: Actually install things
