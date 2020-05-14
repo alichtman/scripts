@@ -6,6 +6,10 @@
 # To run this script, use the following bash command:
 # $ wget https://raw.githubusercontent.com/alichtman/scripts/master/setup/linux-setup.sh && chmod +x linux-setup.sh && ./linux-setup.sh
 
+# TODO: Better debug output
+#       Clean up package installs
+#       Function to download latest GitHub release: https://www.google.com/search?hl=en&q=curl%20latest%20github%20release%20deb
+
 error() {
   printf '\E[31m'; echo "$@"; printf '\E[0m'
 }
@@ -82,6 +86,10 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 sudo apt install neovim
 nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall'
 
+# Install ctags for Vista.vim
+sudo snap install universal-ctags
+sudo snap connect universal-ctags:dot-ctags
+
 # zinit
 mkdir ~/.config/zsh/.zinit
 git clone https://github.com/zdharma/zinit.git ~/.config/zsh/.zinit/bin
@@ -96,7 +104,32 @@ echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sou
 
 sudo apt update
 
-sudo apt install -y ddgr fzf g++ gcc git git-extras htop hub latte-dock libclang-dev libjansson-dev make neofetch plymouth polybar ranger silversearcher-ag spotify-client tmux xsel yq libssl-dev steam
+sudo apt install -y \
+    ddgr \
+    fzf \
+    g++ \
+    gcc \
+    git \
+    git-extras \
+    htop \
+    hub \
+    latte-dock \
+    libclang-dev \
+    libjansson-dev \
+    libssl-dev \
+    make \
+    neofetch \
+    openssh-server \
+    plymouth \
+    polybar \
+    ranger \
+    silversearcher-ag \
+    spotify-client \
+    steam \
+    chromium-browser \
+    tmux \
+    xsel \
+    yq \
 
 # Install node
 sudo snap install --edge --classic node
@@ -111,9 +144,16 @@ curl -s https://updates.signal.org/desktop/apt/keys.asc | sudo apt-key add -
 echo "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main" | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
 sudo apt update && sudo apt install signal-desktop
 
-# Install ctags for Vista.vim
-sudo snap install universal-ctags
-sudo snap connect universal-ctags:dot-ctags
+# Install Discord
+wget -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+sudo dpkg -i discord.deb
+rm discord.deb
+
+# Install Caprine
+sudo snap install caprine
+
+# Install VSCode
+sudo snap install --classic code
 
 mkdir ~/open-source-software
 
@@ -150,7 +190,11 @@ curl https://sh.rustup.rs -sSf | sh
 
 cargo install ripgrep bat fd-find starship lsd
 
+# Set up ssh
+sudo ufw allow ssh
+
 rm ~/.bashrc ~/.bash_history ~/.bash_logout ~/.sudo_as_admin_successful ~/.wget-hsts
 
 echo -e "## Setup Complete"
-echo -e "## Rememer to install the fonts you want to use!"
+echo -e "## Remember to install the fonts you want to use!"
+echo -e "## Remember to add SSH keys and disable password-based logins!"
