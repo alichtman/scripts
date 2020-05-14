@@ -22,6 +22,10 @@ fi
 
 sudo apt install software-properties-common curl
 sudo apt-add-repository multiverse
+sudo apt-add-repository universe
+sudo apt-add-repository main
+sudo apt-add-repository restricted
+sudo apt-add-repository "deb http://archive.canonical.com/ubuntu $(lsb_release -sc) partner"
 
 echo "Have you added contrib and non-free to the /etc/apt/sources.list file?"
 echo "    -> https://wiki.debian.org/SourcesList"
@@ -67,8 +71,8 @@ shallow-backup -reinstall-dots
 # Will reclone later with SSH so I can use it as a git repo
 rm -rf ~/shallow-backup/dotfiles
 
-source ~/.zshenv
-source ~/.config/zsh/.zshrc
+source "$HOME"/.zshenv
+source "$HOME"/.config/zsh/.zshrc
 
 # vim-plug for neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -92,23 +96,26 @@ echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sou
 
 sudo apt update
 
-sudo apt install -y ddgr fzf g++ gcc git git-extras htop hub latte-dock libclang-dev libjansson-dev make neofetch plymouth polybar ranger silversearcher-ag spotify-client tmux xsel yq
+sudo apt install -y ddgr fzf g++ gcc git git-extras htop hub latte-dock libclang-dev libjansson-dev make neofetch plymouth polybar ranger silversearcher-ag spotify-client tmux xsel yq libssl-dev steam
 
 # Install node
-snap install --edge --classic node
+sudo snap install --edge --classic node
 
-# Install lsd
-sudo snap install lsd
+# Install PyCharm and CLion
+sudo snap install pycharm-community --classic
+sudo snap install clion --classic
+
+# Install Signal Desktop
+curl -s https://updates.signal.org/desktop/apt/keys.asc | sudo apt-key add -
+# Yeah, I know xenial is weird here... It works though.
+echo "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main" | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+sudo apt update && sudo apt install signal-desktop
 
 # Install ctags for Vista.vim
+sudo snap install universal-ctags
+sudo snap connect universal-ctags:dot-ctags
+
 mkdir ~/open-source-software
-git clone https://github.com/universal-ctags/ctags.git --depth=1 ~/open-source-software/ctags
-cd ~/open-source-software/ctags || exit
-./autogen.sh
-./configure
-make
-sudo make install
-cd ~ || exit
 
 # tmux setup
 mkdir ~/.config/tmux/plugins
@@ -117,6 +124,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 ~/.config/tmux/plugins/tpm/bin/install_plugins
 
 # Install diff-so-fancy and prettyping
+mkdir ~/bin
 curl https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy -o ~/bin/diff-so-fancy && chmod +x ~/bin/diff-so-fancy
 curl https://raw.githubusercontent.com/denilsonsa/prettyping/master/prettyping -o ~/bin/prettyping && chmod +x ~/bin/prettyping
 
@@ -140,7 +148,9 @@ git clone git@github.com:alichtman/patched-nerd-fonts.git ~/Desktop/Development/
 # Install cargo
 curl https://sh.rustup.rs -sSf | sh
 
-cargo install ripgrep bat fd-find starship
+cargo install ripgrep bat fd-find starship lsd
+
+rm ~/.bashrc ~/.bash_history ~/.bash_logout ~/.sudo_as_admin_successful ~/.wget-hsts
 
 echo -e "## Setup Complete"
 echo -e "## Rememer to install the fonts you want to use!"
