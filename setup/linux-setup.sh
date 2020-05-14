@@ -4,7 +4,7 @@
 # Written by: Aaron Lichtman (@alichtman on GitHub)
 
 # To run this script, use the following bash command:
-# $ wget https://raw.githubusercontent.com/alichtman/scripts/master/setup/linux-setup.sh | bash
+# $ wget https://raw.githubusercontent.com/alichtman/scripts/master/setup/linux-setup.sh && chmod +x linux-setup.sh && ./linux-setup.sh
 
 error() {
   printf '\E[31m'; echo "$@"; printf '\E[0m'
