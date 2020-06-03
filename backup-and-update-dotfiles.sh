@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 # Written by Aaron Lichtman (@alichtman on Gitgit)
 
 # Backup and update dotfiles using shallow-backup
@@ -39,7 +39,9 @@ dotfiles_backup_path="${dotfiles_backup_path/#\~/$HOME}"
 	fi
 
     # Backup the dotfiles on this computer and commit and push that.
-	shallow-backup -no-splash -backup-dots -separate-dotfiles-repo
+	if ! shallow-backup -no-splash -backup-dots -separate-dotfiles-repo; then
+        echo "ERROR: Dotfile backup did not complete" && exit
+	fi
 	git add .
 	commit_msg="$1"
 	if [ -z "$commit_msg" ]
