@@ -5,11 +5,11 @@ service="$1"
 
 case $service in
     htb)
-        sudo openvpn ~/vpn-creds/htb-alichtman.ovpn >/dev/null
+        sudo openvpn /home/kali/vpn-creds/htb-alichtman.ovpn &> /dev/null
         exit
         ;;
     oscp)
-        sudo openvpn ~/vpn-creds/OS-80877-PWK.ovpn #>/dev/null
+        sudo openvpn /home/kali/vpn-creds/OS-80877-PWK.ovpn &> /dev/null
         exit
         ;;
     *)
