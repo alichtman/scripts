@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Written by Aaron Lichtman (@alichtman on Gitgit)
+# Written by Aaron Lichtman
+# https://github.com/alichtman/scripts/blob/master/backup-and-update-dotfiles.sh
 
-# Backup and update dotfiles using shallow-backup
+# Backup and synchronize dotfiles across multiple machines using shallow-backup
 # USAGE: ./backup-and-update-dotfiles.sh [COMMIT MESSAGE]
 
-# First, cd into ~/shallow-backup/dotfiles and git pull. Drop into a manual subshell if it doesn't exit cleanly.
-# Then reinstall the dotfiles from the repo and you should have globally identical dots.
+# 1. cd into ~/shallow-backup/dotfiles and git pull. Drop into a manual subshell if it doesn't exit cleanly.
+# 2. Backup the dotfiles on this computer and commit and push.
+# 3. Reinstall the dotfiles from the repo and you should have globally identical dots.
 
 # TODO: Colored output
 
@@ -16,7 +18,10 @@ dotfiles_backup_path="$(jq ".backup_path" ~/.config/shallow-backup.conf | xargs)
 dotfiles_backup_path="${dotfiles_backup_path/#\~/$HOME}"
 
 (
-    # First, cd into ~/shallow-backup/dotfiles and git pull. Drop into a manual subshell if it doesn't exit cleanly.
+    #####
+    # First, cd into ~/shallow-backup/dotfiles and git pull.
+    # Drop into a manual subshell if it doesn't exit cleanly.
+    #####
     cd "$dotfiles_backup_path" || (echo "Invalid backup path: $dotfiles_backup_path" && exit 1)
 
     # Show what files will change from this git pull to let the user decide if they'd rather do it manually.
@@ -38,7 +43,9 @@ dotfiles_backup_path="${dotfiles_backup_path/#\~/$HOME}"
 		$SHELL
 	fi
 
+    #####
     # Backup the dotfiles on this computer and commit and push that.
+    #####
 	if ! shallow-backup -no-splash -backup-dots -separate-dotfiles-repo; then
         echo "ERROR: Dotfile backup did not complete" && exit
 	fi
@@ -59,7 +66,9 @@ dotfiles_backup_path="${dotfiles_backup_path/#\~/$HOME}"
     # Push changes to remote
 	git push
 
+    #####
     # Then reinstall the dots and you should have globally sync'd dots.
+    #####
     shallow-backup -reinstall-dots -dry-run
     shallow-backup -reinstall-dots
 )
