@@ -200,6 +200,13 @@ dotfiles_backup_path="${dotfiles_backup_path/#\~/$HOME}"
     # Push changes to remote
 	git push
 
+    # shellcheck disable=SC2162
+    read -p "Your changes have been pushed to the remote. Would you like to run $ shallow-backup -reinstall-dots? [y/N] " yn
+    case $yn in
+        [Yy]* ) ;;
+        [Nn]* | * ) exit;;
+    esac
+
     #####
     # Then reinstall the dots and you should have globally sync'd dots.
     #####
