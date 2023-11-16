@@ -29,8 +29,8 @@ def main():
 			shutil.copy2(file, bak_path)
 
 		else: # is directory
-			print(f"{directory} -> {bak_path}/")
-			shutil.copytree(directory, bak_path)
+			print(f"{file} -> {bak_path}/")
+			shutil.copytree(file, bak_path)
 
 
 
