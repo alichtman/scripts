@@ -30,7 +30,7 @@ def main(undo, files, dryrun):
     globbed_list_of_files = []
     for file in files:
         globbed = glob(file)
-        print(globbed)
+        # print(globbed)
 
         # if we're undoing, drop everything that ends in bak
         if undo:
